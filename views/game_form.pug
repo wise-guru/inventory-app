@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      input#title.form-control(type='text', placeholder='Name of game' name='title' required='true' value=(undefined===game ? '' : game.title) )
+
+    div.form-group
+      label(for='publisher') publisher:
+      select#publisher.form-control(type='select', placeholder='Select publisher' name='publisher' required='true' )
+        - publishers.sort(function(a, b) {let textA = a.company_name.toUpperCase(); let textB = b.company_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for publisher in publishers
+          if game
+            option(value=publisher._id selected=(publisher._id.toString()===game.publisher._id.toString() ? 'selected' : false) ) #{publisher.name}
+          else
+            option(value=publisher._id) #{publisher.name}
+            
+    div.form-group
+      label(for='summary') Summary:
+      textarea#summary.form-control(type='textarea', placeholder='Summary' name='summary' required='true') #{undefined===game ? '' : game.summary}
+
+    div.form-group 
+      label(for='image') Select a file:
+      input(type='file' name='file' required='true' value=(undefined===game ? '' : game.image) )
+
+
+    div.form-group
+      label(for='franchise') Franchise:
+      select#franchise.form-control(type='select', placeholder='Select franchise' name='franchise' required='true' )
+        - franchises.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for franchise in franchises
+          if game
+            option(value=franchise._id selected=(franchise._id.toString()===game.franchise._id.toString() ? 'selected' : false) ) #{franchise.name}
+          else
+            option(value=franchise._id) #{franchise.name}
+
+
+    div.form-group
+      label Genre:
+      div
+        for genre in genres
+          div(style='display: inline; padding-right:10px;')
+            input.checkbox-input(type='checkbox', name='genre', id=genre._id, value=genre._id, checked=genre.checked )
+            label(for=genre._id) #{genre.name}
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

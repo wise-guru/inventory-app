@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div.list-container
+    h1= title
+    h4 Genres: #{genre_list.length}
+
+    ul
+      each genre in genre_list
+        li
+          a(href=genre.url) #{genre.name}
+
+      else
+        li There are no genres.

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div.list-container
+    h1= title
+    h4 Franchises: #{franchise_list.length}
+
+    ul
+      each franchise in franchise_list
+        li
+          a(href=franchise.url) #{franchise.name}
+
+      else
+        li There are no franchises.

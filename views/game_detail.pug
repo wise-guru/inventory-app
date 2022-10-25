@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div.content-container
+    h1 Title: #{game.title}
+
+    p #[strong Publisher: ] 
+      a(href=game.publisher.url) #{game.publisher.name}
+    img(src=game.image alt="video game cover")
+    p #[strong Summary:] #{game.summary}
+    p #[strong Franchise:] #{game.franchise.name}
+
+    p #[strong Genre: ]
+      each val, index in game.genre
+        a(href=val.url) #{val.name}
+        if index < game.genre.length - 1
+          |,
+
+    div
+      h4 Copies: #{game_instances.length}
+
+      each val in game_instances
+        hr
+        p #[strong #{title}]
+        if val.status=='Available'
+          p.text-success #{val.status}
+        else if val.status=='Maintenance'
+          p.text-danger #{val.status}
+        else
+          p.text-warning #{val.status}
+        p #[strong Id:]
+          a(href=val.url) #{val._id} #{val.name}
+
+      else
+        p There are no copies of this game in the inventory.
+
+      hr
+      p
+          a(href=game.url+'/delete') Delete game
+      p
+          a(href=game.url+'/update') Update game

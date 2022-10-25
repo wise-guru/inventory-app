@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  div.list-container
+    h1= title
+    h4 Copies: #{gameinstance_list.length}
+
+    ul(type="1")
+      each val in gameinstance_list
+        li
+          a(href=val.url) #{val.game.title} (#{val._id}) - 
+          if val.status=='Available'
+            span.text-success #{val.status}
+          else if val.status=='Sold'
+            span.text-danger #{val.status}
+          else
+            span.text-warning #{val.status}
+          //- if val.status!='Available'
+          //-   span  (Due: #{val.due_back_formatted} )
+
+      else
+        li There are no game copies in this inventory.

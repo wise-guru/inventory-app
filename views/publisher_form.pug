@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='first_name') Company Name:
+      input#first_name.form-control(type='text' placeholder='Company name (Ex. Nintendo)' name='first_name' required='true' value=(undefined===publisher ? '' : publisher.compnay_name) )
+
+    div.form-group
+      label(for='founded_date') Founded date:
+      input#founded_year.form-control(type='date' name='founded_date' value=(undefined===publisher ? '' : publisher.founded_year) )
+    button.btn.btn-primary(type='submit') Submit
+    div.form-group
+      label(for='defunct_date') Defunct date (leave blank if company is still running):
+      input#defunct_date.form-control(type='date' name='defunct_date' value=(undefined===publisher ? '' : publisher.defunct_date) )
+    button.btn.btn-primary(type='submit') Submit
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

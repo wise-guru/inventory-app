@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1 #{title} #{game.name}
+
+  if games_gameinstances.length
+
+    p #[strong Delete the following game instances before attempting to delete this game.]
+
+    div.content-container
+
+      h4 game Instances
+
+      dl
+      each gameInstance in games_gameinstances
+        dt
+          a(href=gameInstance.url) #{gameInstance.game}
+        dd #{gameInstance.imprint} -- #{gameInstance.status}
+
+  else
+    p Do you really want to delete this game?
+
+    form(method='POST' action='')
+      div.form-group
+        input#gameid.form-control(type='hidden', name='gameid', required='true', value=game._id)
+
+      button.btn.btn-primary(type='submit') Delete

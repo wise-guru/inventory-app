@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+  div.content-container
+
+    h1 Publisher: #{publisher.name}
+    p #{publisher.founded_date_formatted} - #{publisher.defunct_date_formatted}
+
+    div
+
+      h4 Games
+
+      dl
+        each game in publisher_games
+          dt
+            a(href=game.url) #{game.title}
+          dd #{game.summary}
+
+        else
+          p This publisher has no games.
+      hr
+      p
+        a(href=publisher.url+'/delete') Delete Publisher
+
+      p
+        a(href=publisher.url+'/update') Update Publisher
+
+
+

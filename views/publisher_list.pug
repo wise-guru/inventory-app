@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  div.list-container
+    h1= title
+    h4 Publishers: #{publisher_list.length}
+
+    ul
+      each publisher in publisher_list
+        li
+          a(href=publisher.url) #{publisher.name}
+          |  (#{publisher.founded_date_formatted} - #{publisher.defunct_date_formatted})
+
+      else
+        li There are no publishers.

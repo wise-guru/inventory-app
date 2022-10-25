@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{title}: #{gameinstance._id}
+
+  p Do you really want to delete this Game Instance?
+
+  form(method='POST' action='')
+    div.form-group
+      input#gameinstanceid.form-control(type='hidden', name='gameinstanceid', required='true', value=gameinstance._id)
+
+    button.btn.btn-primary(type='submit') Delete

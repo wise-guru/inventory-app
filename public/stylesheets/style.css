@@ -1,0 +1,89 @@
+:root {
+  --text-color: rgb(209 213 219/1);
+  --lighter-blue: rgb(31,41,55);
+}
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:  rgb(17 24 39/1);
+  color: var(--text-color);
+  font-size: 1.25rem;
+}
+
+
+a {
+  color: #00B7FF;
+}
+
+li {
+  list-style: none;
+}
+
+.sidebar-nav {
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* game_list view  */
+
+.game-list-image img {
+  width: 10rem;
+} 
+
+
+.game-list-item {
+  background-color: RGB(31,41,55);
+  border-radius: 5px;
+}
+
+.game-list-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(2fr 1fr 1fr 1fr 1fr);
+  align-items: space-around;
+  text-align: center;
+}
+
+.game-list-container table {
+  border-collapse: separate; 
+  border-spacing: 0 1rem;
+}
+
+
+/* For franchise, gameinstance, publisher, and genre views */
+
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.list-container.homepage ul {
+  min-width: 37rem;
+}
+
+form input:hover {
+  cursor: auto;
+}
+
+/*Dark Mode for inputs */
+
+.checkbox, .form-control, .form-control:focus {
+  background-color: rgba(55,65,81,.5);
+  color: var(--text-color);
+  cursor: auto;
+}
+
+/* Lighter blue for content on list and detail pages */
+
+
+.list-container ul, form, .content-container {
+  background-color: var(--lighter-blue);
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
+}
+

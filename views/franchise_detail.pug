@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.content-container
+
+    h1 Franchise: #{franchise.name}
+
+    div
+
+      h4 Games
+
+      dl
+        each game in franchise_games
+          dt
+            a(href=game.url) #{game.title}
+          dd #{game.summary}
+
+        else
+          p This franchise has no books
+      hr
+      p
+        a(href=franchise.url+'/delete') Delete franchise
+      p
+        a(href=franchise.url+'/update') Update franchise

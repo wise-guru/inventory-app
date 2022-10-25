@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  div.content-container
+
+    h1 ID: #{gameinstance._id}
+
+    p #[strong Title:]
+      a(href=gameinstance.game.url) #{gameinstance.game.title}
+
+    img(src=gameinstance.game.image alt="#{game.instance.game.title} cover")
+
+    p #[strong Status:]
+      if gameinstance.status=='Available'
+        span.text-success #{gameinstance.status}
+      else if gameinstance.status=='Maintenance'
+        span.text-danger #{gameinstance.status}
+      else
+        span.text-warning #{gameinstance.status}
+
+    if gameinstance.status!='Available'
+      //- p #[strong Due back:] #{gameinstance.due_back_formatted}
+
+    hr
+    p
+      a(href=gameinstance.url+'/delete') Delete Game Instance
+    p
+      a(href=gameinstance.url+'/update') Update Game Instance
