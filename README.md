@@ -1,6 +1,6 @@
 # Game Inventory
 
-![Where's Waldo Gif](https://github.com/wise-guru/inventory-app/blob/main/public/images/inventory.gif)
+![Inventory App Gif](https://github.com/wise-guru/inventory-app/blob/main/public/images/inventory.gif)
 
 Click here for a [Live Link](https://inventory-app-ls92.onrender.com/catalog).
 
