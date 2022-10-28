@@ -15,4 +15,4 @@ Click here for a [Live Link](https://inventory-app-ls92.onrender.com/catalog).
 3. Leverages MongoDB to store inventory database.
 4. Utilizes the Express framework for Node.js.
 5. Follows the MVC (Model-View-Controller) design pattern
-6. Uses the ejs template.
+6. Uses the pug template.
