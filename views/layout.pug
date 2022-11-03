@@ -4,40 +4,81 @@ html(lang='en')
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
+    //- link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
     script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='icon' href="/images/favicon.ico")
   body
     div(class='container-fluid')
+
+      header(class='header') 
+        div(class='icon')
+          img(src='/images/favicon.ico' alt="controller")
+          h2 Game Inventory
+
       div(class='row')
         div(class='col-sm-2')
+          a(href="#" class="toggle-button toggle")
+            span.bar 
+            span.bar 
+            span.bar 
           block sidebar
             ul(class='sidebar-nav')
-              li
-                a(href='/catalog') Home
-              li
-                a(href='/catalog/games') All games
-              li
-                a(href='/catalog/publishers') All publishers
-              li
-                a(href='/catalog/genres') All genres
-              li
-                a(href='/catalog/franchises') All franchises
-              li
-                a(href='/catalog/gameinstances') All game-instances
+              a(href='/catalog') 
+                li
+                  img(src='/images/icons/home.png')
+                  p Home
+              a(href='/catalog/games')
+                li
+                  img(src='/images/icons/controller.png') 
+                  p All games
+              a(href='/catalog/publishers')             
+                li
+                  img(src='/images/icons/publishers.png') 
+                  p All publishers
+
+              a(href='/catalog/genres')
+                li
+                  img(src='/images/icons/genres.png') 
+                  p All genres
+
+              a(href='/catalog/franchises')
+                li
+                  img(src='/images/icons/franchises.png') 
+                  p All franchises
+              
+              a(href='/catalog/gameinstances')
+                li
+                  img(src='/images/icons/gameinstances.png') 
+                  p All game-instances
               li
                 hr
-              li
-                a(href='/catalog/publisher/create') Create new publisher
-              li
-                a(href='/catalog/franchise/create') Create new franchises
-              li
-                a(href='/catalog/genre/create') Create new genre
-              li
-                a(href='/catalog/game/create') Create new game
-              li
-                a(href='/catalog/gameinstance/create') Create new game instance (copy)
+              
+              a(href='/catalog/publisher/create')
+                li
+                  img(src='/images/icons/plus.png') 
+                  p Create new publisher
+              
+              a(href='/catalog/franchise/create')
+                li
+                  img(src='/images/icons/plus.png') 
+                  p Create new franchise
+              
+              a(href='/catalog/genre/create')
+                li
+                  img(src='/images/icons/plus.png') 
+                  p Create new genre
+              
+              a(href='/catalog/game/create')
+                li
+                  img(src='/images/icons/plus.png') 
+                  p Create new game
+              
+              a(href='/catalog/gameinstance/create')
+                li 
+                  img(src='/images/icons/plus.png') 
+                  p Create new gameinstance (copy)
 
         div(class='col-sm-10')
           block content
