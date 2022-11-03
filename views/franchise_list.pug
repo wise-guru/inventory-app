@@ -10,5 +10,13 @@ block content
         li
           a(href=franchise.url) #{franchise.name}
 
+    div(class="cards-container")
+      each franchise in franchise_list 
+        div(class="category-card")
+          a(href=franchise.url)
+            div(class="image-container")
+              img(src= "/images/category/franchise.png")
+            a(href=franchise.url) #{franchise.name}
+
       else
         li There are no franchises.

@@ -10,6 +10,18 @@ block content
         li
           a(href=publisher.url) #{publisher.name}
           |  (#{publisher.founded_date_formatted} - #{publisher.defunct_date_formatted})
+    
+    div(class="cards-container")
+      each publisher in publisher_list 
+        div(class="category-card")
+          a(href=publisher.url)
+            div(class="image-container")
+              img(src= "/images/category/publisher.webp")
+            a(href=publisher.url) #{publisher.name}
+            div (#{publisher.founded_date_formatted} - #{publisher.defunct_date_formatted})
+          
+          
+
 
       else
         li There are no publishers.

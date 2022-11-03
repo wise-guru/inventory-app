@@ -6,17 +6,31 @@ block content
     h4 Copies: #{gameinstance_list.length}
 
     ul(type="1")
-      each val in gameinstance_list
+      each gameinstance in gameinstance_list
         li
-          a(href=val.url) #{val.game.title} (#{val._id}) - 
-          if val.status=='Available'
-            span.text-success #{val.status}
-          else if val.status=='Sold'
-            span.text-danger #{val.status}
+          a(href=gameinstance.url) #{gameinstance.game.title} (#{gameinstance._id}) - 
+          if gameinstance.status=='Available'
+            span.text-success #{gameinstance.status}
+          else if gameinstance.status=='Sold'
+            span.text-danger #{gameinstance.status}
           else
-            span.text-warning #{val.status}
-          //- if val.status!='Available'
-          //-   span  (Due: #{val.due_back_formatted} )
+            span.text-warning #{gameinstance.status}
+
+    div(class="cards-container")
+      each gameinstance in gameinstance_list 
+        div(class="category-card")
+          a(href=gameinstance.url)
+            div(class="image-container")
+              img(src= "/images/category/gameinstance.jpg")
+            div #{gameinstance.game.title}
+            a(href=gameinstance.url) (#{gameinstance._id})
+            if gameinstance.status=='Available'
+              div.text-success #{gameinstance.status}
+            else if gameinstance.status=='Sold'
+              div.text-danger #{gameinstance.status}
+            else
+              div.text-warning #{gameinstance.status}
+       
 
       else
         li There are no game copies in this inventory.

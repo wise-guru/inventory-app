@@ -9,6 +9,14 @@ block content
       each genre in genre_list
         li
           a(href=genre.url) #{genre.name}
+    
+    div(class="cards-container")
+      each genre in genre_list 
+        div(class="category-card")
+          a(href=genre.url)
+            div(class="image-container")
+              img(src= "/images/category/genre.webp")
+            a(href=genre.url) #{genre.name}
 
       else
         li There are no genres.
