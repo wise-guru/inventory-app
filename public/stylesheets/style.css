@@ -1,11 +1,10 @@
 :root {
   --text-color: rgb(209 213 219/1);
   --body-background: #003049;
-  --lighter-blue: #013b5a;
+  --lighter-blue:  hsla(0,0%,100%,.07);
   --sidebar-background: #f77f00;
   --sidebar-highlight: #fc8e18;
   --header-background: #D62828;
-  
 }
 
 body {
@@ -17,12 +16,24 @@ body {
   padding: 0;
 }
 
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
 .header {
   grid-auto-flow: column;
   align-items: center;
   justify-content: start;
-  background-color: var(--header-background);
+  background-color: var(--header-background)!important;
   box-shadow: 0 3px 10px rgb(0 0 0 / 15%);
+  padding: 10px;
+}
+
+.header .title {
+  color: #fff;
 }
 
 .icon {
@@ -55,9 +66,11 @@ li {
 .row {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  height: 90%;
+  height: 91.9%;
   /* grid-template-rows: 1fr; */
 }
+
+/*------------- Sidebar -------------*/
 
 .col-sm-2 {
   display: grid;
@@ -110,15 +123,17 @@ li {
   gap: 16px;
 }
 
-/* .sidebar-nav a:active {
-  background-color: #f77f00;
-} */
 
 .sidebar-nav a:hover {
   background-color: var(--sidebar-highlight);
 }
 
-/* game_list view  */
+.gameinstance .title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/*--------------- game_list view  -----------------*/
 
 .game-list-image img {
   width: 10rem;
@@ -194,9 +209,13 @@ form input:hover {
 /*Dark Mode for inputs */
 
 .checkbox, .form-control, .form-control:focus {
-  background-color: rgba(55,65,81,.5);
+  background-color: var(--body-background);
   color: var(--text-color);
   cursor: auto;
+}
+
+.checkbox-input {
+  margin-right: 5px;
 }
 
 ::placeholder {
@@ -291,7 +310,7 @@ button, input, optgroup, select, textarea {
   color: #FCBF49!important;
 }
 
-/* ----------cards for list pages ----------*/
+/* ---------------cards for list pages ------------------*/
 
 .cards-container {
   display: grid;
@@ -307,7 +326,7 @@ button, input, optgroup, select, textarea {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  /* max-width: 80%; */
+  text-align: center;
   background-color: hsla(0,0%,100%,.07);
   box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
 
@@ -317,6 +336,7 @@ button, input, optgroup, select, textarea {
   width: 100%;
 }
 
+
 .category-card img:hover {
   opacity: 0.55;
 }
@@ -324,37 +344,55 @@ button, input, optgroup, select, textarea {
 
 /* media queries */
 
-@media (max-width: 576px) {
-.col-sm-10 {
-    /* -ms-flex: 0 0 83.333333%;
-    flex: 0 0 83.333333%;
-    max-width: 83.333333%; */
+@media (max-width: 768px) {
 
+  
+
+  .container-fluid {
+    max-width: 100%;
   }
+
+  body.sidebar {
+    overflow: hidden;
+  }
+
+  .list-container.homepage ul {
+    min-width: auto;
+  }
+
+  /*----------Sidebar nav ------------*/
+
+  .col-sm-10 {
+    display: grid;
+  }
+
 
   .col-sm-2 {
-    width: 100%;
-    display: none;
-    font-weight: 600;
+  height: 100%;
+  width: 75%;
+  max-width: 310px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: -100%;
+  /* background-color: #111; */
+  overflow-x: hidden;
+  transition: 0.5s;
+  /* padding-top: 60px; */
   }
-
-  /* .navbar-links {
-    width: 100%;
-    display: none;
-    font-weight: 600;
-  } */
   
   .sidebar-navbar {
     flex-direction: column;
     width: 100%;
+    height: 100%;
   }
- 
+  
+  /* Hamburger menu */
   
   .toggle-button {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    /* display: none; */
+    top: 1.5rem;
+    right: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -374,8 +412,61 @@ button, input, optgroup, select, textarea {
   }
 
   
-  .navbar-links.active {
+  .col-sm-2.active {
+    display: grid;
+    position: fixed;
+  }
+
+  .col-sm-10 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cards-container img {
+    width: 100%;
+  }
+
+  .cards-container {
+    grid-template-columns: auto;
+  }
+
+  .row{
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+
+
+  .gameinstance.content-container h1, .gameinstance.content-container p {
+    margin: 0;
+    padding: 0;
+  }
+
+  
+  .gameinstance ul {
     display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 90%;
+    align-self: center;
+  }
+
+  .gameinstance h1, .gameinstance h4 {
+    margin-left: 10px;
+  }
+  
+  .gameinstances img {
+    width: 90%;
+  }
+
+  .gameinstance .col-sm-10 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .gameinstance .category-card {
+    max-width: 90%;
+    justify-self: center;
   }
 }
 
