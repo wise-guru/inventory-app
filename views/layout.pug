@@ -3,10 +3,8 @@ html(lang='en')
   head
     title= title
     meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    //- link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
-    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    script(src="/javascripts/toggle.js" defer) 
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='icon' href="/images/favicon.ico")
   body
@@ -14,16 +12,17 @@ html(lang='en')
 
       header(class='header') 
         div(class='icon')
-          img(src='/images/favicon.ico' alt="controller")
-          h2 Game Inventory
+          a(href="/")
+            img(src='/images/favicon.ico' alt="controller")   
+          a(class="title" href="/") Game Inventory
+        a(href="#" class="toggle-button toggle")
+            span.bar 
+            span.bar 
+            span.bar 
+      block sidebar
 
       div(class='row')
         div(class='col-sm-2')
-          a(href="#" class="toggle-button toggle")
-            span.bar 
-            span.bar 
-            span.bar 
-          block sidebar
             ul(class='sidebar-nav')
               a(href='/catalog') 
                 li
@@ -82,3 +81,5 @@ html(lang='en')
 
         div(class='col-sm-10')
           block content
+
+         
