@@ -1,4 +1,3 @@
-var mongoKey = require("./public/javascripts/toggle");
 var createError = require("http-errors");
 var express = require("express");
 const router = express.Router();
