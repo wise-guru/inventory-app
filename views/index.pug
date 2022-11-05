@@ -20,4 +20,37 @@ block content
         li #[strong Publishers:] !{data.publisher_count}
         li #[strong Franchises:] !{data.franchise_count}
         li #[strong Genres:] !{data.genre_count}
+
+      div(class="cards-container")
+
+        div(class="category-card")
+          a(href="/catalog/games")
+            div(class="image-container")
+              img(src= "/images/category/games.jpg")
+            div #[strong Games:] !{data.game_count}
+
+        div(class="category-card")
+          a(href="/catalog/publishers")
+            div(class="image-container")
+              img(src= "/images/category/publisher.webp")
+            div #[strong Publishers:] !{data.publisher_count}
+
+        div(class="genre category-card")
+          a(href="/catalog/genres")
+            div(class="image-container")
+              img(src= "/images/category/genre.jpg")
+            div #[strong Genres:] !{data.genre_count}
+
+        div(class="category-card")
+          a(href="/catalog/franchises")
+            div(class="image-container")
+              img(src= "/images/category/franchise.png")
+            div #[strong Franchises:] !{data.franchise_count}
+
+        div(class="category-card")
+          a(href="/catalog/gameinstances")
+            div(class="image-container")
+              img(src= "/images/category/gameinstance.jpg")
+            div #[strong Gameinstance:] !{data.game_instance_count}
+
     
