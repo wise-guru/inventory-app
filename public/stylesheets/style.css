@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
+
 :root {
   --text-color: rgb(209 213 219/1);
   --body-background: #003049;
@@ -8,7 +10,7 @@
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: "Roboto", Arial, sans-serif;
   background-color: var(--body-background);
   color: var(--text-color);
   font-size: 1.25rem;
@@ -43,6 +45,7 @@ hr {
   justify-content: start;
   gap: 8px;
   padding-left: 16px;
+  font-weight: 700;
 }
 
 .icon img {
@@ -102,6 +105,7 @@ li {
 
   /* border-radius: 10px; */
   height: 100%;
+  font-weight: 600;
 }
 
 .sidebar-nav a {
