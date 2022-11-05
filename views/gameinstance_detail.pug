@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  div.content-container
+  div.content-container(class="gameinstance")
 
-    h1 ID: #{gameinstance._id}
+    div.title ID: #{gameinstance._id}
 
     p #[strong Title:]
       a(href=gameinstance.game.url) #{gameinstance.game.title}
@@ -19,7 +19,6 @@ block content
         span.text-warning #{gameinstance.status}
 
     if gameinstance.status!='Available'
-      //- p #[strong Due back:] #{gameinstance.due_back_formatted}
 
     hr
     p
