@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  div.list-container
+  div.list-container(class="gameinstance")
     h1= title
     h4 Copies: #{gameinstance_list.length}
 
@@ -16,7 +16,7 @@ block content
           else
             span.text-warning #{gameinstance.status}
 
-    div(class="cards-container")
+    div(class="gameinstances cards-container")
       each gameinstance in gameinstance_list 
         div(class="category-card")
           a(href=gameinstance.url)
