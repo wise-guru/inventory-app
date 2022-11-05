@@ -3,10 +3,10 @@
 :root {
   --text-color: rgb(209 213 219/1);
   --body-background: #003049;
-  --lighter-blue:  hsla(0,0%,100%,.07);
-  --sidebar-background: #f77f00;
-  --sidebar-highlight: #fc8e18;
-  --header-background: #D62828;
+  --lighter-blue:  hsla(0,0%,100%,.05);
+  --sidebar-background: #343A40;
+  --sidebar-highlight: #495057;
+  --header-background: #212529;
 }
 
 body {
@@ -58,6 +58,13 @@ a {
   text-decoration: none;
 }
 
+dt a {
+  font-weight: 600;
+}
+dd {
+  padding-bottom: 20px;
+}
+
 li {
   list-style: none;
 }
@@ -101,11 +108,11 @@ li {
   /* margin-top: 1.5rem; */
   padding: 0;
   list-style: none;
-  background-color: #f77f00;
+  background-color: var(--sidebar-background);
 
   /* border-radius: 10px; */
   height: 100%;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .sidebar-nav a {
@@ -271,8 +278,12 @@ form {
 
 .btn-primary {
   color: #fff;
-  background-color: var(--sidebar-background);
-  border-color: var(--sidebar-background);
+  background-color: var(--sidebar-highlight);
+  border-color: var(--sidebar-highlight);
+}
+
+button {
+  cursor: pointer;
 }
 
 button, select {
