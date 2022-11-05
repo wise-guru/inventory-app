@@ -1,4 +1,4 @@
-var mongoKey = require("./creds");
+var mongoKey = require("./public/javascripts/toggle");
 var createError = require("http-errors");
 var express = require("express");
 const router = express.Router();
@@ -7,8 +7,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 require("dotenv").config();
-
-console.log(process.env);
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
