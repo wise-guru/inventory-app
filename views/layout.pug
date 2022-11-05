@@ -4,7 +4,7 @@ html(lang='en')
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    script(src="/javascripts/toggle.js" defer) 
+    //- script(src="/javascripts/toggle.js" defer) 
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='icon' href="/images/favicon.ico")
   body
@@ -81,5 +81,30 @@ html(lang='en')
 
         div(class='col-sm-10')
           block content
+    script(type="text/javascript").
+      const toggleButton = document.querySelector(".toggle");
+
+      const body = document.body;
+      const navbarLinks = document.querySelector(".col-sm-2");
+
+      toggleButton.addEventListener("click", () => {
+        navbarLinks.classList.toggle("active");
+        body.classList.toggle("sidebar");
+
+        if (body.classList.contains("sidebar")) {
+          closeNav();
+        } else {
+          openNav();
+        }
+      });
+
+      function openNav() {
+        navbarLinks.style.left = "-100%";
+      }
+
+      function closeNav() {
+        navbarLinks.style.left = "0";
+      }
+
 
          
