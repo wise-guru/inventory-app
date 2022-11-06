@@ -3,11 +3,46 @@ const Publisher = require("../models/publisher");
 const Franchise = require("../models/franchise");
 const Genre = require("../models/genre");
 const GameInstance = require("../models/gameinstance");
-const { body, validationResult } = require("express-validator");
+var path = require("path");
+const {
+  body: check,
+  validationResult,
+  checkSchema,
+} = require("express-validator");
+const multer = require("multer");
 
 //Maybe DONE?
 
+function checkImageErrors(req, file, cb) {
+  let format = file.mimetype.split("/");
+  if (
+    format[1] === "jpg" ||
+    format[1] === "png" ||
+    format[1] === "jpeg" ||
+    format[1] === "webp"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+
+const Storage = multer.diskStorage({
+  destination: "public/images/games",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+  fileFilter(req, file, callback) {
+    checkImageErrors(req, file, callback);
+  },
+});
+
 const async = require("async");
+const { fstat } = require("fs");
 
 exports.index = (req, res) => {
   async.parallel(
@@ -125,7 +160,7 @@ exports.game_create_get = (req, res, next) => {
   );
 };
 
-// Handle game create on POST.
+//-------------- Handle game create on POST.--------------//
 exports.game_create_post = [
   // Convert the genre to an array.
 
@@ -146,39 +181,70 @@ exports.game_create_post = [
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  upload.single("image"),
+  check("title", "Title must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("publisher", "Publisher must not be empty.")
+  check("publisher", "Publisher must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  check("summary", "Summary must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
   //   body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
-  body("franchise.*").escape(),
-  body("genre.*").escape(),
+  check("franchise.*").escape(),
+  check("genre.*").escape(),
+  checkSchema({
+    image: {
+      custom: {
+        options: (value, { req, location, path }) => {
+          return !!req.file;
+        },
+        errorMessage:
+          "You need to upload a product image in format .jpg, .jpeg, .png, or .webp. File size should be less than 5MB",
+      },
+    },
+  }),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
+    // //For image upload
+    // upload(req, res, (err) => {
+    //   if (err) {
+    //     console.log();
+    //   } else {
+    //     const newImage = new ImageModel({
+    //       image: {
+    //         data: req.file.filename,
+    //         contentType: "image/png",
+    //       },
+    //     });
+    //   }
+    // });
+
     // Create a Game object with escaped and trimmed data.
     const game = new Game({
       title: req.body.title,
       publisher: req.body.publisher,
       summary: req.body.summary,
+      image: undefined === req.file ? "" : req.file.filename,
       franchise: req.body.franchise,
       genre: req.body.genre,
     });
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-
+      if (!!req.file) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.log(err.message);
+        });
+      }
       // Get all publishers and genres for form.
       async.parallel(
         {
@@ -348,6 +414,14 @@ exports.game_update_get = (req, res, next) => {
 
 // Handle game update on POST.
 exports.game_update_post = [
+  // (req, res, next) => {
+  //   if (!Array.isArray(req.body.franchise)) {
+  //     req.body.franchise =
+  //       typeof req.body.franchise === "undefined" ? [] : [req.body.franchise];
+  //   }
+  //   next();
+  // },
+
   // Convert the genre to an array
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
@@ -358,21 +432,33 @@ exports.game_update_post = [
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  upload.single("image"),
+  check("title", "Title must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("publisher", "Publisher must not be empty.")
+  check("publisher", "Publisher must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  check("summary", "Summary must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
   //   body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
-  body("franchise.*").escape(),
-  body("genre.*").escape(),
+  check("franchise.*").escape(),
+  check("genre.*").escape(),
+  checkSchema({
+    image: {
+      custom: {
+        options: (value, { req, location, path }) => {
+          return !!req.file;
+        },
+        errorMessage:
+          "You need to upload a game image in format .jpg, .jpeg, .png or .webp. File size should be less than 5MB.",
+      },
+    },
+  }),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -384,6 +470,7 @@ exports.game_update_post = [
       title: req.body.title,
       publisher: req.body.publisher,
       summary: req.body.summary,
+      image: undefined === req.file ? "" : req.file.filename,
       franchise: req.body.franchise,
       genre: typeof req.body.genre === "undefined" ? [] : req.body.genre,
       _id: req.params.id, //This is required, or a new ID will be assigned!
@@ -391,7 +478,11 @@ exports.game_update_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-
+      if (!!req.file) {
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.log(err.message);
+        });
+      }
       // Get all publishers and genres for form.
       async.parallel(
         {
