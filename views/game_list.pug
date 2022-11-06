@@ -18,11 +18,11 @@ block content
         tr.game-list-item
           td.game-list-image
             a(href=game.url)
-              img(src=game.image, alt="video game cover")
+              img(src="/images/games/" + game.image, alt="video game cover")
           td
-            a(href=game.url) #{game.title}
+            a(href=game.url) !{game.title}
           td  
-            a(href=game.publisher.url) #{game.publisher.name}
+            a(href=game.publisher.url) !{game.publisher.name}
           td
             each val, index in game.genre
               a(href=val.url) #{val.name}

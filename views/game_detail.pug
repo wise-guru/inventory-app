@@ -2,12 +2,12 @@ extends layout
 
 block content
   div.content-container
-    h1 Title: #{game.title}
+    h1 Title: !{game.title}
 
     p #[strong Publisher: ] 
       a(href=game.publisher.url) #{game.publisher.name}
-    img(src=game.image alt="video game cover")
-    p #[strong Summary:] #{game.summary}
+    img(src="/images/games/" + game.image alt="video game cover")
+    p #[strong Summary:] !{game.summary}
     p #[strong Franchise:] #{game.franchise.name}
 
     p #[strong Genre: ]
@@ -21,7 +21,7 @@ block content
 
       each val in game_instances
         hr
-        p #[strong #{title}]
+        p #[strong !{title}]
         if val.status=='Available'
           p.text-success #{val.status}
         else if val.status=='Maintenance'
