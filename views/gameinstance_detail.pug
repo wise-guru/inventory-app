@@ -8,7 +8,7 @@ block content
     p #[strong Title:]
       a(href=gameinstance.game.url) #{gameinstance.game.title}
 
-    img(src=gameinstance.game.image alt="#{game.instance.game.title} cover")
+    img(src="/images/games/" + gameinstance.game.image alt= gameinstance.game.title + " cover")
 
     p #[strong Status:]
       if gameinstance.status=='Available'
