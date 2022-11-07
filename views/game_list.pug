@@ -4,15 +4,14 @@ block content
   h1= title
   h4 Games: #{game_list.length}
   div.game-list-container
-    table
+    table.game-list
       
       tr.list-header
         th(scope="col") Image 
-        th(scope="col") Product Name
+        th(scope="col") Name
         th(scope="col") Publisher
         th(scope="col") Genre 
         th(scope="col") Franchise
-        th 
   
       each game in game_list
         tr.game-list-item
@@ -29,6 +28,6 @@ block content
               if index < game.genre.length - 1
                 |, 
           td 
-            a(href=game.franchise.url)  #{game.franchise.name}
+            a(href=game.franchise.url)  !{game.franchise.name}
       else
         td There are no games.

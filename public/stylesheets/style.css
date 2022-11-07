@@ -58,6 +58,10 @@ a {
   text-decoration: none;
 }
 
+.list-container ul a:hover {
+  color:#ffd98c;
+}
+
 dt a {
   font-weight: 600;
 }
@@ -167,6 +171,11 @@ li {
 .game-list-container table {
   border-collapse: separate; 
   border-spacing: 0 1rem;
+  max-width: 100%;
+}
+
+.game-list-container tr, tbody, td {
+  max-width: 100%;
 }
 
 
@@ -360,7 +369,6 @@ button, input, optgroup, select, textarea {
 /* media queries */
 
 @media (max-width: 768px) {
-
   
 
   .container-fluid {
@@ -373,6 +381,18 @@ button, input, optgroup, select, textarea {
 
   .list-container.homepage ul {
     min-width: auto;
+  }
+
+  .game-list-container img {
+    width: 100%;
+  }
+
+  .game-list-container {
+    font-size: 1rem;
+  }
+
+  table img {
+    width: 5rem;
   }
 
   /*----------Sidebar nav ------------*/

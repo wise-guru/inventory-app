@@ -7,8 +7,8 @@ block content
 
     ul(type="1")
       each gameinstance in gameinstance_list
-        li
-          a(href=gameinstance.url) #{gameinstance.game.title} (#{gameinstance._id}) - 
+        li(style="padding-bottom: 8px")
+          a(href=gameinstance.url) !{gameinstance.game.title}  (#{gameinstance._id}) - 
           if gameinstance.status=='Available'
             span.text-success #{gameinstance.status}
           else if gameinstance.status=='Sold'
@@ -21,15 +21,16 @@ block content
         div(class="category-card")
           a(href=gameinstance.url)
             div(class="image-container")
-              img(src= "/images/category/gameinstance.jpg")
-            div #{gameinstance.game.title}
-            a(href=gameinstance.url) (#{gameinstance._id})
-            if gameinstance.status=='Available'
-              div.text-success #{gameinstance.status}
-            else if gameinstance.status=='Sold'
-              div.text-danger #{gameinstance.status}
-            else
-              div.text-warning #{gameinstance.status}
+              img(src= "/images/games/" + gameinstance.game.image)
+            div
+              div !{gameinstance.game.title}
+              a(href=gameinstance.url) (#{gameinstance._id})
+              if gameinstance.status=='Available'
+                div.text-success #{gameinstance.status}
+              else if gameinstance.status=='Sold'
+                div.text-danger #{gameinstance.status}
+              else
+                div.text-warning #{gameinstance.status}
        
 
       else
