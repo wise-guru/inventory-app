@@ -16,7 +16,7 @@ exports.gameinstance_list = function (req, res, next) {
       }
       // Successful, so render.
       res.render("gameinstance_list", {
-        title: "Game Instance List",
+        title: "Game-Instance List",
         gameinstance_list: list_gameinstances,
       });
     });
