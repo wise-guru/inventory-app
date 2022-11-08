@@ -5,8 +5,8 @@ block content
 
   form(method='POST' action='')
     div.form-group
-      label(for='first_name') Company Name:
-      input#first_name.form-control(type='text' placeholder='Company name (Ex. Nintendo)' name='first_name' required='true' value=(undefined===publisher ? '' : publisher.compnay_name) )
+      label(for='company_name') Company Name:
+      input#company_name.form-control(type='text' placeholder='Company name (Ex. Nintendo)' name='company_name' required='true' value=(undefined===publisher ? '' : publisher.company_name) )
 
     div.form-group
       label(for='founded_date') Founded date:

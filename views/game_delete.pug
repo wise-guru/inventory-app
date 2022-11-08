@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 #{title} #{game.name}
+  h1 #{title}
 
   if games_gameinstances.length
 
@@ -23,5 +23,11 @@ block content
     form(method='POST' action='')
       div.form-group
         input#gameid.form-control(type='hidden', name='gameid', required='true', value=game._id)
+
+      label(for='passcode') Enter admin password:
+      input#name.form-control.form-error(type='password', placeholder='Enter password' name='passcode' required=true)
+      
+      if passcodeError 
+        div #{passcodeError}
 
       button.btn.btn-primary(type='submit') Delete
