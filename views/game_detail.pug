@@ -5,10 +5,10 @@ block content
     h1 Title: !{game.title}
 
     p #[strong Publisher: ] 
-      a(href=game.publisher.url) #{game.publisher.name}
+      a(href=game.publisher.url) !{game.publisher.name}
     img(src="/images/games/" + game.image alt="video game cover")
     p #[strong Summary:] !{game.summary}
-    p #[strong Franchise:] #{game.franchise.name}
+    p #[strong Franchise:] !{game.franchise.name}
 
     p #[strong Genre: ]
       each val, index in game.genre

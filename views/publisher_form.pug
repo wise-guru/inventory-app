@@ -11,10 +11,17 @@ block content
     div.form-group
       label(for='founded_date') Founded date:
       input#founded_year.form-control(type='date' name='founded_date' value=(undefined===publisher ? '' : publisher.founded_year) )
-    button.btn.btn-primary(type='submit') Submit
     div.form-group
       label(for='defunct_date') Defunct date (leave blank if company is still running):
       input#defunct_date.form-control(type='date' name='defunct_date' value=(undefined===publisher ? '' : publisher.defunct_date) )
+
+    if passcode
+      div.form-group
+        label(for='passcode') Enter admin password:
+        input#name.form-control.form-error(type='password', placeholder='Enter password' name='passcode')
+        
+      if passcodeError 
+        div #{passcodeError}
     button.btn.btn-primary(type='submit') Submit
   if errors
     ul

@@ -10,17 +10,9 @@ block content
         - game_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
         for game in game_list
             if gameinstance
-                option(value=game._id selected=(selected_game==game._id.toString() ? 'selected': false)) #{game.title}
+                option(value=game._id selected=(selected_game==game._id.toString() ? 'selected': false)) !{game.title}
             else
-                option(value=game._id) #{game.title}
-
-    //- div.form-group
-    //-   label(for='imprint') Imprint:
-    //-   input#imprint.form-control(type='text' placeholder='Publisher and date information' name='imprint' required='true' value=(undefined===gameinstance ? '' : gameinstance.imprint))
-
-    //- div.form-group
-    //-   label(for='due_back') Date when game available:
-    //-   input#due_back.form-control(type='date' name='due_back' value=(undefined===gameinstance ? '' : gameinstance.due_back))
+                option(value=game._id) !{game.title}
 
     div.form-group
       label(for='status') Status:
@@ -28,6 +20,14 @@ block content
         option(value='Available') Available
         option(value='Sold') Sold
         option(value='Layaway') Layaway
+
+    if passcode
+      div.form-group
+        label(for='passcode') Enter admin password:
+        input#name.form-control.form-error(type='password', placeholder='Enter password' name='passcode')
+        
+      if passcodeError 
+        div #{passcodeError}
 
     button.btn.btn-primary(type='submit') Submit
 

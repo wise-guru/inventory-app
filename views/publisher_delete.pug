@@ -1,8 +1,7 @@
 extends layout
 
 block content
-  h1 #{title}: #{publisher.name}
-  p= publisher.lifespan
+  h1 #{title}: !{publisher.name}
 
   if publisher_games.length
 
@@ -15,8 +14,8 @@ block content
       dl
       each game in publisher_games
         dt
-          a(href=game.url) #{game.title}
-        dd #{game.summary}
+          a(href=game.url) !{game.title}
+        dd !{game.summary}
 
   else
     p Do you really want to delete this publisher?

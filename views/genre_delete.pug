@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 #{title}: #{genre.name}
+  h1 #{title}: !{genre.name}
 
   if genres_games.length
 
@@ -12,13 +12,13 @@ block content
       h4 Games
 
       dl
-      each book in genres_games
+      each game in genres_games
         dt
-          a(href=book.url) #{book.title}
-        dd #{book.summary}
+          a(href=game.url) #{game.title}
+        dd #{game.summary}
 
   else
-    p Do you really want to delete this Genre?
+    p Do you really want to delete this genre?
 
     form(method='POST' action='')
       div.form-group

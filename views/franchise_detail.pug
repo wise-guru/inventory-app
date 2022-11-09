@@ -3,7 +3,7 @@ extends layout
 block content
   div.content-container
 
-    h1 Franchise: #{franchise.name}
+    h1 Franchise: !{franchise.name}
 
     div
 
@@ -12,8 +12,8 @@ block content
       dl
         each game in franchise_games
           dt
-            a(href=game.url) #{game.title}
-          dd #{game.summary}
+            a(href=game.url) !{game.title}
+          dd !{game.summary}
 
         else
           p This franchise has no games.

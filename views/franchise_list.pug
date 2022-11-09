@@ -8,7 +8,7 @@ block content
     ul
       each franchise in franchise_list
         li
-          a(href=franchise.url) #{franchise.name}
+          a(href=franchise.url) !{franchise.name}
 
     div(class="cards-container")
       each franchise in franchise_list 
@@ -16,7 +16,7 @@ block content
           a(href=franchise.url)
             div(class="image-container")
               img(src= "/images/category/franchise.png")
-            a(href=franchise.url) #{franchise.name}
+            a(href=franchise.url) !{franchise.name}
 
       else
         li There are no franchises.

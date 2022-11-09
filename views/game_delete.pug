@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  h1 #{title}
+  h1 #{title}: !{game.title}
 
   if games_gameinstances.length
 
-    p #[strong Delete the following game instances before attempting to delete this game.]
+    p #[strong Delete the following game-instances before attempting to delete this game.]
 
     div.content-container
 

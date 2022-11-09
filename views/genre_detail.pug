@@ -3,15 +3,15 @@ extends layout
 block content
   div.content-container
 
-    h1 Genre: #{genre.name}
+    h1 Genre: !{genre.name}
 
       h4 Games
 
       dl
         each game in genre_games
           dt
-            a(href=game.url) #{game.title}
-          dd #{game.summary}
+            a(href=game.url) !{game.title}
+          dd !{game.summary}
 
         else
           p This genre has no games.
