@@ -8,33 +8,33 @@ const franchise_controller = require("../controllers/franchiseController");
 const genre_controller = require("../controllers/genreController");
 const game_instance_controller = require("../controllers/gameinstanceController");
 
-/// BOOK ROUTES ///
+/// Game ROUTES ///
 
 // GET catalog home page.
 router.get("/", game_controller.index);
 
-// GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
+// GET request for creating a Game. NOTE This must come before routes that display Game (uses id).
 router.get("/game/create", game_controller.game_create_get);
 
-// POST request for creating Book.
+// POST request for creating Game.
 router.post("/game/create", game_controller.game_create_post);
 
-// GET request to delete Book.
+// GET request to delete Game.
 router.get("/game/:id/delete", game_controller.game_delete_get);
 
-// POST request to delete Book.
+// POST request to delete Game.
 router.post("/game/:id/delete", game_controller.game_delete_post);
 
-// GET request to update Book.
+// GET request to update Game.
 router.get("/game/:id/update", game_controller.game_update_get);
 
-// POST request to update Book.
+// POST request to update Game.
 router.post("/game/:id/update", game_controller.game_update_post);
 
-// GET request for one Book.
+// GET request for one Game.
 router.get("/game/:id", game_controller.game_detail);
 
-// GET request for list of all Book items.
+// GET request for list of all Game items.
 router.get("/games", game_controller.game_list);
 
 /// AUTHOR ROUTES ///
@@ -126,48 +126,48 @@ router.get("/genre/:id", genre_controller.genre_detail);
 // GET request for list of all Genre.
 router.get("/genres", genre_controller.genre_list);
 
-/// BOOKINSTANCE ROUTES ///
+/// GameINSTANCE ROUTES ///
 
-// GET request for creating a BookInstance. NOTE This must come before route that displays BookInstance (uses id).
+// GET request for creating a GameInstance. NOTE This must come before route that displays GameInstance (uses id).
 router.get(
   "/gameinstance/create",
   game_instance_controller.gameinstance_create_get
 );
 
-// POST request for creating BookInstance.
+// POST request for creating GameInstance.
 router.post(
   "/gameinstance/create",
   game_instance_controller.gameinstance_create_post
 );
 
-// GET request to delete BookInstance.
+// GET request to delete GameInstance.
 router.get(
   "/gameinstance/:id/delete",
   game_instance_controller.gameinstance_delete_get
 );
 
-// POST request to delete BookInstance.
+// POST request to delete GameInstance.
 router.post(
   "/gameinstance/:id/delete",
   game_instance_controller.gameinstance_delete_post
 );
 
-// GET request to update BookInstance.
+// GET request to update GameInstance.
 router.get(
   "/gameinstance/:id/update",
   game_instance_controller.gameinstance_update_get
 );
 
-// POST request to update BookInstance.
+// POST request to update GameInstance.
 router.post(
   "/gameinstance/:id/update",
   game_instance_controller.gameinstance_update_post
 );
 
-// GET request for one BookInstance.
+// GET request for one GameInstance.
 router.get("/gameinstance/:id", game_instance_controller.gameinstance_detail);
 
-// GET request for list of all BookInstance.
+// GET request for list of all GameInstance.
 router.get("/gameinstances", game_instance_controller.gameinstance_list);
 
 module.exports = router;
