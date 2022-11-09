@@ -326,12 +326,12 @@ button, input, optgroup, select, textarea {
   color: #28a745!important;
 }
 
-.text-danger {
+.text-danger, .form-error {
   color: #dc3545!important;
 }
 
 .text-warning {
-  color: #FCBF49!important;
+  color: #eae2b7!important;
 }
 
 /* ---------------cards for list pages ------------------*/
