@@ -3,9 +3,7 @@ const Game = require("../models/game"); //b00k
 const async = require("async");
 const { body, validationResult } = require("express-validator");
 
-//DONE
-
-// Display list of all Genre.
+// Display list of all Genres.
 exports.genre_list = function (req, res, next) {
   Genre.find()
     .sort([["name", "ascending"]])
@@ -43,6 +41,7 @@ exports.genre_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+
       // Successful, so render
       res.render("genre_detail", {
         title: "Genre Detail",
@@ -55,7 +54,7 @@ exports.genre_detail = (req, res, next) => {
 
 // Display Genre create form on GET.
 exports.genre_create_get = (req, res, next) => {
-  res.render("genre_form", { title: "Create Genre" });
+  res.render("genre_form", { title: "Create Genre", passcode: false });
 };
 
 // Handle Genre create on POST.
@@ -76,6 +75,7 @@ exports.genre_create_post = [
       res.render("genre_form", {
         title: "Create Genre",
         genre,
+        passcode: false,
         errors: errors.array(),
       });
       return;
@@ -135,40 +135,53 @@ exports.genre_delete_get = function (req, res, next) {
 
 // Handle Genre delete on POST.
 exports.genre_delete_post = function (req, res, next) {
-  async.parallel(
-    {
-      genre: function (callback) {
-        Genre.findById(req.body.genreid).exec(callback);
+  body("passcode")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Passcode must be specified."),
+    async.parallel(
+      {
+        genre: function (callback) {
+          Genre.findById(req.body.genreid).exec(callback);
+        },
+        genres_games: function (callback) {
+          Game.find({ genre: req.body.genreid }).exec(callback);
+        },
       },
-      genres_games: function (callback) {
-        Game.find({ genre: req.body.genreid }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
+      function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        // Success
+        if (results.genres_games.length > 0) {
+          // Genre has games. Render in same way as for GET route.
+          res.render("genre_delete", {
+            title: "Delete Genre",
+            genre: results.genre,
+            genres_games: results.genres_games,
+          });
+          return;
+        }
+        if (req.body.passcode != process.env.ADMIN_PASSCODE) {
+          return res.render("genre_delete", {
+            title: "Delete Genre",
+            genre: results.genre,
+            genres_games: results.genres_games,
+            passcodeError: "Wrong Passcode",
+          });
+        } else {
+          // Genre has no games. Delete object and redirect to the landing page
+          Genre.findByIdAndRemove(req.body.genreid, function deleteGenre(err) {
+            if (err) {
+              return next(err);
+            }
+            // Success - go to genre list
+            res.redirect("/catalog/genres");
+          });
+        }
       }
-      // Success
-      if (results.genres_games.length > 0) {
-        // Genre has games. Render in same way as for GET route.
-        res.render("genre_delete", {
-          title: "Delete Genre",
-          genre: results.genre,
-          genres_games: results.genres_games,
-        });
-        return;
-      } else {
-        // Genre has no games. Delete object and redirect to the landing page
-        Genre.findByIdAndRemove(req.body.genreid, function deleteGenre(err) {
-          if (err) {
-            return next(err);
-          }
-          // Success - go to genre list
-          res.redirect("/catalog/genres");
-        });
-      }
-    }
-  );
+    );
 };
 
 // Display Genre update form on GET.
@@ -184,6 +197,7 @@ exports.genre_update_get = function (req, res, next) {
       res.render("genre_form", {
         title: "Update Genre",
         genre: results.genre,
+        passcode: true,
       });
     }
   );
@@ -193,6 +207,13 @@ exports.genre_update_get = function (req, res, next) {
 exports.genre_update_post = [
   // Validation and Sanitization
   body("name", "Genre must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("passcode").custom((value, { req }) => {
+    if (req.body.passcode === process.env.ADMIN_PASSCODE) {
+      return true;
+    } else {
+      throw new Error("Wrong password");
+    }
+  }),
 
   // Process post validation and sanitization
   (req, res, next) => {
@@ -216,6 +237,7 @@ exports.genre_update_post = [
           res.render("genre_form", {
             title: "Update Genre",
             genre: results.genre,
+            passcode: true,
             errors: errors.array(),
           });
         }

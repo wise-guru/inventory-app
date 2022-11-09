@@ -2,8 +2,6 @@ var GameInstance = require("../models/gameinstance");
 var Game = require("../models/game");
 var async = require("async");
 
-//DONE
-
 const { body, validationResult } = require("express-validator");
 
 // Display list of all Gameinstances.
@@ -16,7 +14,7 @@ exports.gameinstance_list = function (req, res, next) {
       }
       // Successful, so render.
       res.render("gameinstance_list", {
-        title: "Game-Instance List",
+        title: "Game Instance List",
         gameinstance_list: list_gameinstances,
       });
     });
@@ -54,6 +52,7 @@ exports.gameinstance_create_get = function (req, res, next) {
     res.render("gameinstance_form", {
       title: "Create GameInstance",
       game_list: games,
+      passcode: false,
     });
   });
 };
@@ -62,15 +61,7 @@ exports.gameinstance_create_get = function (req, res, next) {
 exports.gameinstance_create_post = [
   // Validate and sanitize fields.
   body("game", "Game must be specified").trim().isLength({ min: 1 }).escape(),
-  //   body("imprint", "Imprint must be specified")
-  //     .trim()
-  //     .isLength({ min: 1 })
-  //     .escape(),
   body("status").escape(),
-  //   body("due_back", "Invalid date")
-  //     .optional({ checkFalsy: true })
-  //     .isISO8601()
-  //     .toDate(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -80,9 +71,7 @@ exports.gameinstance_create_post = [
     // Create a GameInstance object with escaped and trimmed data.
     var gameinstance = new GameInstance({
       game: req.body.game,
-      //   imprint: req.body.imprint,
       status: req.body.status,
-      //   due_back: req.body.due_back,
     });
 
     if (!errors.isEmpty()) {
@@ -98,6 +87,7 @@ exports.gameinstance_create_post = [
           selected_game: gameinstance.game._id,
           errors: errors.array(),
           gameinstance: gameinstance,
+          passcode: false,
         });
       });
       return;
@@ -136,14 +126,44 @@ exports.gameinstance_delete_get = function (req, res, next) {
 
 // Handle GameInstance delete on POST.
 exports.gameinstance_delete_post = function (req, res, next) {
-  // Assume valid GameInstance id in field.
-  GameInstance.findByIdAndRemove(req.body.id, function deleteGameInstance(err) {
-    if (err) {
-      return next(err);
-    }
-    // Success, so redirect to list of GameInstance items.
-    res.redirect("/catalog/gameinstances");
-  });
+  body("passcode")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Passcode must be specified."),
+    async.parallel(
+      {
+        gameinstance: function (callback) {
+          GameInstance.findById(req.params.id).populate("game").exec(callback);
+        },
+        games: function (callback) {
+          Game.find(callback);
+        },
+      },
+      function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        if (req.body.passcode != process.env.ADMIN_PASSCODE) {
+          return res.render("gameinstance_delete", {
+            title: "Delete Game-instance",
+            gameinstance: results.gameinstance,
+            passcodeError: "Wrong Passcode",
+          });
+        }
+        // Success.
+        GameInstance.findByIdAndRemove(
+          req.body.gameinstanceid,
+          function deleteGameInstance(err) {
+            if (err) {
+              return next(err);
+            }
+            // Success, so redirect to list of GameInstance items.
+            res.redirect("/catalog/gameinstances");
+          }
+        );
+      }
+    );
 };
 
 // Display GameInstance update form on GET.
@@ -174,6 +194,7 @@ exports.gameinstance_update_get = function (req, res, next) {
         game_list: results.games,
         selected_game: results.gameinstance.game._id,
         gameinstance: results.gameinstance,
+        passcode: true,
       });
     }
   );
@@ -183,15 +204,14 @@ exports.gameinstance_update_get = function (req, res, next) {
 exports.gameinstance_update_post = [
   // Validate and sanitize fields.
   body("game", "Game must be specified").trim().isLength({ min: 1 }).escape(),
-  body("imprint", "Imprint must be specified")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
   body("status").escape(),
-  body("due_back", "Invalid date")
-    .optional({ checkFalsy: true })
-    .isISO8601()
-    .toDate(),
+  body("passcode").custom((value, { req }) => {
+    if (req.body.passcode === process.env.ADMIN_PASSCODE) {
+      return true;
+    } else {
+      throw new Error("Wrong password");
+    }
+  }),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -220,6 +240,7 @@ exports.gameinstance_update_post = [
           selected_game: gameinstance.game._id,
           errors: errors.array(),
           gameinstance: gameinstance,
+          passcode: true,
         });
       });
       return;

@@ -3,8 +3,6 @@ const async = require("async");
 const Game = require("../models/game");
 const { body, validationResult } = require("express-validator");
 
-//DONE?
-
 // Display list of all Publishers.
 exports.publisher_list = (req, res, next) => {
   console.log(Publisher);
@@ -21,38 +19,6 @@ exports.publisher_list = (req, res, next) => {
       });
     });
 };
-
-// // Display detail page for a specific Author.
-// exports.author_detail = (req, res, next) => {
-//   async.parallel(
-//     {
-//       author(callback) {
-//         Author.findById(req.params.id).exec(callback);
-//       },
-//       authors_books(callback) {
-//         Book.find({ author: req.params.id }, "title summary").exec(callback);
-//       },
-//     },
-//     (err, results) => {
-//       if (err) {
-//         // Error in API usage.
-//         return next(err);
-//       }
-//       if (results.author == null) {
-//         // No results.
-//         const err = new Error("Author not found");
-//         err.status = 404;
-//         return next(err);
-//       }
-//       // Successful, so render.
-//       res.render("author_detail", {
-//         title: "Author Detail",
-//         author: results.author,
-//         author_books: results.authors_books,
-//       });
-//     }
-//   );
-// };
 
 // Display detail page for a specific Publisher.
 exports.publisher_detail = (req, res, next) => {
@@ -88,31 +54,24 @@ exports.publisher_detail = (req, res, next) => {
 
 // Display Publisher create form on GET.
 exports.publisher_create_get = (req, res, next) => {
-  res.render("publisher_form", { title: "Create Publisher" });
+  res.render("publisher_form", { title: "Create Publisher", passcode: false });
 };
 
 // Handle Publisher create on POST.
 exports.publisher_create_post = [
   // Validate and sanitize fields.
-  body("first_name")
+  body("company_name")
     .trim()
     .isLength({ min: 1 })
     .escape()
-    .withMessage("First name must be specified.")
+    .withMessage("Company name must be specified.")
     .isAlphanumeric()
     .withMessage("First name has non-alphanumeric characters."),
-  body("family_name")
-    .trim()
-    .isLength({ min: 1 })
-    .escape()
-    .withMessage("Family name must be specified.")
-    .isAlphanumeric()
-    .withMessage("Family name has non-alphanumeric characters."),
-  body("date_of_birth", "Invalid date of birth")
+  body("founded_date", "Invalid founded date")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
-  body("date_of_death", "Invalid date of death")
+  body("defunct_date", "Invalid defunct date")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
@@ -126,6 +85,7 @@ exports.publisher_create_post = [
       res.render("publisher_form", {
         title: "Create Publisher",
         publisher: req.body,
+        passcode: false,
         errors: errors.array(),
       });
       return;
@@ -134,10 +94,9 @@ exports.publisher_create_post = [
 
     // Create an Publisher object with escaped and trimmed data.
     const publisher = new Publisher({
-      first_name: req.body.first_name,
-      family_name: req.body.family_name,
-      date_of_birth: req.body.date_of_birth,
-      date_of_death: req.body.date_of_death,
+      company_name: req.body.company_name,
+      founded_date: req.body.founded_date,
+      defunct_date: req.body.defunct_date,
     });
     publisher.save((err) => {
       if (err) {
@@ -203,6 +162,14 @@ exports.publisher_delete_post = (req, res, next) => {
         });
         return;
       }
+      if (req.body.passcode != process.env.ADMIN_PASSCODE) {
+        return res.render("publisher_delete", {
+          title: "Delete Publisher",
+          publisher: results.publisher,
+          publisher_games: results.publishers_games,
+          passcodeError: "Wrong Passcode",
+        });
+      }
       // Publisher has no books. Delete object and redirect to the list of publishers.
       Publisher.findByIdAndRemove(req.body.publisherid, (err) => {
         if (err) {
@@ -221,16 +188,10 @@ exports.publisher_update_get = function (req, res, next) {
     {
       publisher: function (callback) {
         Publisher.findById(req.params.id)
-          // .populate("book")
+          // .populate("game")
           // .populate("genre")
           .exec(callback);
       },
-      // books: function (callback) {
-      //   Book.find(callback);
-      // },
-      // genres: function (callback) {
-      //   genre.find(callback);
-      // },
     },
     function (err, results) {
       if (err) return next(err);
@@ -241,10 +202,10 @@ exports.publisher_update_get = function (req, res, next) {
         return next(err);
       }
 
-      console.log(results.publisher.date_of_birth_GET);
       res.render("publisher_form", {
         title: "Update Publisher",
         publisher: results.publisher,
+        passcode: true,
       });
     }
   );
@@ -253,22 +214,25 @@ exports.publisher_update_get = function (req, res, next) {
 // Handle Publisher update on POST
 exports.publisher_update_post = [
   // Validate and sanitize fields
-  body("first_name", "First Name must not be empty.")
+  body("company_name", "Company name must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("family_name", "Family Name must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  body("date_of_birth", "Date of Birth must not be empty.")
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
-  // body("date_of_death", "Date of Death must not be empty.")
-  //   .trim()
-  //   .isLength({ min: 1 })
-  //   .escape(),
+  body("founded_date", "Invalid founded date")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  body("defunct_date", "Invalid defunct date")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  body("passcode").custom((value, { req }) => {
+    if (req.body.passcode === process.env.ADMIN_PASSCODE) {
+      return true;
+    } else {
+      throw new Error("Wrong password");
+    }
+  }),
 
   // Process request after validation and saniization
   (req, res, next) => {
@@ -277,10 +241,9 @@ exports.publisher_update_post = [
 
     // Create an objet with escaped/trimmed data and old id
     var publisher = new Publisher({
-      first_name: req.body.first_name,
-      family_name: req.body.family_name,
-      date_of_birth: req.body.date_of_birth,
-      date_of_death: req.body.date_of_death,
+      company_name: req.body.company_name,
+      founded_date: req.body.founded_date,
+      defunct_date: req.body.defunct_date,
       _id: req.params.id,
     });
     if (!errors.isEmpty()) {
@@ -290,6 +253,7 @@ exports.publisher_update_post = [
       res.render("publisher_form", {
         title: "Update Publisher",
         publisher: publisher,
+        passcode: true,
         errors: errors.array(),
       });
       return;

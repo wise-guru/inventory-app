@@ -3,8 +3,6 @@ const Game = require("../models/game");
 const async = require("async");
 const { body, validationResult } = require("express-validator");
 
-//DONE
-
 // Display list of all Franchise.
 exports.franchise_list = function (req, res, next) {
   Franchise.find()
@@ -137,43 +135,56 @@ exports.franchise_delete_get = function (req, res, next) {
 
 // Handle Franchise delete on POST.
 exports.franchise_delete_post = function (req, res, next) {
-  async.parallel(
-    {
-      franchise: function (callback) {
-        Franchise.findById(req.body.franchiseid).exec(callback);
+  body("passcode")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Passcode must be specified."),
+    async.parallel(
+      {
+        franchise: function (callback) {
+          Franchise.findById(req.body.franchiseid).exec(callback);
+        },
+        franchises_games: function (callback) {
+          Game.find({ franchise: req.body.franchiseid }).exec(callback);
+        },
       },
-      franchises_games: function (callback) {
-        Game.find({ franchise: req.body.franchiseid }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      // Success
-      if (results.franchises_games.length > 0) {
-        // Franchise has games. Render in same way as for GET route.
-        res.render("franchise_delete", {
-          title: "Delete Franchise",
-          franchise: results.franchise,
-          franchises_games: results.franchises_games,
-        });
-        return;
-      } else {
-        // Franchise has no games. Delete object and redirect to the landing page
-        Franchise.findByIdAndRemove(
-          req.body.franchiseid,
-          function deleteFranchise(err) {
-            if (err) {
-              return next(err);
+      function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        // Success
+        if (results.franchises_games.length > 0) {
+          // Franchise has games. Render in same way as for GET route.
+          res.render("franchise_delete", {
+            title: "Delete Franchise",
+            franchise: results.franchise,
+            franchises_games: results.franchises_games,
+          });
+          return;
+        }
+        if (req.body.passcode != process.env.ADMIN_PASSCODE) {
+          return res.render("franchise_delete", {
+            title: "Delete Franchise",
+            franchise: results.franchise,
+            franchises_games: results.franchises_games,
+            passcodeError: "Wrong Passcode",
+          });
+        } else {
+          // Franchise has no games. Delete object and redirect to the landing page
+          Franchise.findByIdAndRemove(
+            req.body.franchiseid,
+            function deleteFranchise(err) {
+              if (err) {
+                return next(err);
+              }
+              // Success - go to franchise list
+              res.redirect("/catalog/franchises");
             }
-            // Success - go to franchise list
-            res.redirect("/catalog/franchises");
-          }
-        );
+          );
+        }
       }
-    }
-  );
+    );
 };
 
 // Display Franchise update form on GET.
@@ -189,6 +200,7 @@ exports.franchise_update_get = function (req, res, next) {
       res.render("franchise_form", {
         title: "Update Franchise",
         franchise: results.franchise,
+        passcode: true,
       });
     }
   );
@@ -201,6 +213,13 @@ exports.franchise_update_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
+  body("passcode").custom((value, { req }) => {
+    if (req.body.passcode === process.env.ADMIN_PASSCODE) {
+      return true;
+    } else {
+      throw new Error("Wrong password");
+    }
+  }),
 
   // Process post validation and sanitization
   (req, res, next) => {
@@ -221,10 +240,11 @@ exports.franchise_update_post = [
         },
         function (err, results) {
           if (err) return next(err);
-          res.render("franchise", {
+          res.render("franchise_form", {
             title: "Update Franchise",
             franchise: results.franchise,
             errors: errors.array(),
+            passcode: true,
           });
         }
       );
