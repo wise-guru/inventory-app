@@ -126,6 +126,10 @@ function gameInstanceCreate(game, status, cb) {
 function createGenreFranchisesPublishers(cb) {
   async.series(
     [
+      //--------Populating Publishers------------//
+      function (callback) {
+        publisherCreate("Innersloth", "2015", false, callback);
+      },
       function (callback) {
         publisherCreate("Square Enix", "2003", false, callback);
       },
@@ -141,12 +145,8 @@ function createGenreFranchisesPublishers(cb) {
       function (callback) {
         publisherCreate("Sony", false, false, callback);
       },
-      //   function (callback) {
-      //     publisherCreate("Jim", "Jones", "1971-12-16", false, callback);
-      //   },
-      function (callback) {
-        genreCreate("Graphic Adventure", callback);
-      },
+
+      //----------Populating genres------------/
       function (callback) {
         genreCreate("Action", callback);
       },
@@ -156,6 +156,10 @@ function createGenreFranchisesPublishers(cb) {
       function (callback) {
         genreCreate("Role-playing", callback);
       },
+      function (callback) {
+        genreCreate("Party", callback);
+      },
+      //-------------Populating franchises-----------/
       function (callback) {
         franchiseCreate("Life is Strange", callback);
       },
@@ -196,9 +200,54 @@ function createGames(cb) {
     [
       function (callback) {
         gameCreate(
+          "Among Us",
+          "Among Us is a party game of teamwork and betrayal. Crewmates work together to complete tasks before one or more Impostors can kill everyone aboard.",
+          "1668205110787.jpg",
+          publishers[5],
+          [genres[4]],
+          franchises[4],
+          callback
+        );
+      },
+
+      function (callback) {
+        gameCreate(
+          "Stardew Valley",
+          "Stardew Valley is an open-ended country-life RPG! You’ve inherited your grandfather’s old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?",
+          "1668205694693.jpeg",
+          publishers[6],
+          [genres[3]],
+          franchises[5],
+          callback
+        );
+      },
+      function (callback) {
+        gameCreate(
+          "Assassin's Creed",
+          "The setting is 1191 AD. The Third Crusade is tearing the Holy Land apart. You, Altair, intend to stop the hostilities by suppressing both sides of the conflict. You are an Assassin, a warrior shrouded in secrecy and feared for your ruthlessness. Your actions can throw your immediate environment into chaos, and your existence will shape events during this pivotal moment in history.",
+          "1668207139086.jpg",
+          publishers[7],
+          [genres[3]],
+          franchises[6],
+          callback
+        );
+      },
+      function (callback) {
+        gameCreate(
+          "Assassin's Creed 2",
+          "The game's plot is set in the 21st century and follows Desmond Miles as he relives the genetic memories of his ancestor, Ezio Auditore da Firenze, to uncover the mysteries left behind by an ancient race known as the First Civilization in the hope of ending the Assassin-Templar conflict.",
+          "1668207510682.jpeg",
+          publishers[7],
+          [genres[3]],
+          franchises[6],
+          callback
+        );
+      },
+      function (callback) {
+        gameCreate(
           "Life is Strange",
           "The plot focuses on Max Caulfield, an 18-year-old photography student who discovers that she has the ability to rewind time at any moment, leading her every choice to enact the butterfly effect.",
-          "/images/lis.png",
+          "1667714488673.png",
           publishers[0],
           [genres[0]],
           franchises[0],
@@ -209,7 +258,7 @@ function createGames(cb) {
         gameCreate(
           "Life is Strange: Before the Storm",
           "Life is Strange: Before the Storm features Chloe Price a 16 year-old rebel who forms an unlikely friendship with Rachel Amber, a beautiful and popular girl destined for success. When Rachel's world is turned upside down by a family secret it takes their new found alliance to give each other the strength to overcome their demons.",
-          "/images/lis-bts.jpg",
+          "1667714600618.jpg",
           publishers[0],
           [genres[0]],
           franchises[0],
@@ -220,7 +269,7 @@ function createGames(cb) {
         gameCreate(
           "Life is Strange 2",
           "After a tragic incident, brothers Sean and Daniel Diaz run away from home. Fearing the police, and dealing with Daniel's new telekinetic power - the power to move objects with your mind - the boys flee to Mexico for safety.",
-          "/images/lis-two.jpg",
+          "1667714549705.jpg",
           publishers[0],
           [genres[0]],
           franchises[0],
@@ -231,7 +280,7 @@ function createGames(cb) {
         gameCreate(
           "Life is Strange: True Colors",
           "The plot focuses on Alex Chen, a young woman who can experience the emotions of others, as she tries to solve the mystery behind a tragedy that happened in her life.",
-          "/images/lis-tc.png",
+          "1667714627144.png",
           publishers[0],
           [genres[0]],
           franchises[0],
@@ -242,7 +291,7 @@ function createGames(cb) {
         gameCreate(
           "Legend of Zelda: Twilight Princess",
           "The story focuses on series protagonist Link, who tries to prevent Hyrule from being engulfed by a corrupted parallel dimension known as the Twilight Realm. To do so, he takes the form of both a Hylian and a wolf, and he is assisted by a mysterious creature named Midna.",
-          "/images/twilight.jpg",
+          "1667714455697.jpg",
           publishers[1],
           [genres[1], genres[2]],
           franchises[1],
@@ -253,7 +302,7 @@ function createGames(cb) {
         gameCreate(
           "Legend of Zelda: Skyward Sword",
           "Taking the role of series protagonist Link, players navigate the floating island of Skyloft and the land below it, completing quests that advance the story and solving environmental and dungeon-based puzzles.",
-          "/images/skyward.png",
+          "1667714425051.png",
           publishers[1],
           [genres[1], genres[2]],
           franchises[1],
@@ -264,7 +313,7 @@ function createGames(cb) {
         gameCreate(
           "Legend of Zelda: Majora's Mask",
           "In this shadowy tale, a masked Skull Kid drags Link into the world of Termina, where the moon is falling from the sky.",
-          "/images/majoras-mask.webp",
+          "1667713577009.webp",
           publishers[1],
           [genres[1], genres[2]],
           franchises[1],
@@ -275,7 +324,7 @@ function createGames(cb) {
         gameCreate(
           "Grand Theft Auto IV",
           "What does the American Dream mean today? For Niko Bellic, fresh off the boat from Europe, it is the hope he can escape his past.",
-          "/images/gta-four.jpg",
+          "1667708557222.jpg",
           publishers[2],
           [genres[1], genres[2]],
           franchises[2],
@@ -286,7 +335,7 @@ function createGames(cb) {
         gameCreate(
           "Grand Theft Auto V",
           "Set within the fictional state of San Andreas, based on Southern California, the single-player story follows three protagonists—retired bank robber Michael De Santa, street gangster Franklin Clinton, and drug dealer and gunrunner Trevor Philips—and their attempts to commit heists while under pressure from a corrupt government agency and powerful criminals.",
-          "/images/gta-five.jpeg",
+          "1667707834707.jpeg",
           publishers[2],
           [genres[1], genres[2]],
           franchises[2],
@@ -297,7 +346,7 @@ function createGames(cb) {
         gameCreate(
           "The Witcher",
           "Based on the fantasy novel series, The Witcher is centered around Geralt of Rivia, a legendary monster slayer caught in a web of intrigue woven by forces vying for control of the world.",
-          "/images/witcher.jpg",
+          "1667714666609.jpg",
           publishers[3],
           [genres[1], genres[3]],
           franchises[3],
@@ -308,7 +357,7 @@ function createGames(cb) {
         gameCreate(
           "The Witcher 3",
           "Players control Geralt of Rivia, a monster slayer for hire known as a Witcher, and search for his adopted daughter, who is on the run from the otherworldly Wild Hunt.",
-          "/images/witcher-three.jpg",
+          "1667714755919.jpg",
           publishers[3],
           [genres[1], genres[3]],
           franchises[3],

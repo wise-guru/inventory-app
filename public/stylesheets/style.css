@@ -160,6 +160,16 @@ li {
   border-radius: 5px;
 }
 
+.game-list-item:hover {
+  box-shadow:
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  0px 8px 10px 1px hsla(0,0%,0%,0.14), 
+  0px 3px 14px 2px hsla(0,0%,0%,0.12), 
+  0px 5px 5px -3px hsla(0,0%,0%,0.2);
+
+  outline: 1px solid black;
+}
+
 .game-list-container {
   display: grid;
   grid-auto-flow: column;
@@ -176,6 +186,7 @@ li {
 
 .game-list-container tr, tbody, td {
   max-width: 100%;
+  padding: 8px;
 }
 
 
@@ -326,7 +337,7 @@ button, input, optgroup, select, textarea {
   color: #28a745!important;
 }
 
-.text-danger, .form-error {
+.text-danger {
   color: #dc3545!important;
 }
 
@@ -388,7 +399,11 @@ button, input, optgroup, select, textarea {
   }
 
   .game-list-container {
-    font-size: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .game-list-container tr, tbody, td {
+    padding: 0;
   }
 
   table img {

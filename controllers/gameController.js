@@ -166,7 +166,9 @@ exports.game_create_post = [
   (req, res, next) => {
     if (!Array.isArray(req.body.franchise)) {
       req.body.franchise =
-        typeof req.body.franchise === "undefined" ? [] : [req.body.franchise];
+        typeof req.body.franchise === "undefined" || ""
+          ? []
+          : [req.body.franchise];
     }
     next();
   },
@@ -174,7 +176,7 @@ exports.game_create_post = [
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
       req.body.genre =
-        typeof req.body.genre === "undefined" ? [] : [req.body.genre];
+        typeof req.body.genre === "undefined" || "" ? [] : [req.body.genre];
     }
     next();
   },
