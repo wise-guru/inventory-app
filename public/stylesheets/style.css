@@ -38,6 +38,10 @@ hr {
   color: #fff;
 }
 
+.header .title:hover {
+  transform: scale(1.020);
+}
+
 .icon {
   display: grid;
   grid-auto-flow: column;

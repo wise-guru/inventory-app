@@ -17,7 +17,7 @@ block content
         tr.game-list-item
           td.game-list-image
             a(href=game.url)
-              img(src="/images/games/" + game.image, alt="video game cover")
+              img(src="/images/games/" + game.image, alt="video game cover", onerror="this.onerror=null;this.src=/images/games/game.jpg';")
           td
             a(href=game.url) !{game.title}
           td  
