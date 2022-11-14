@@ -224,6 +224,10 @@ form input:hover {
   font-size: 1.25rem;
 }
 
+.game-detail img {
+  max-width: 400px;
+}
+
 /* form css */
 .form-control {
   display: block;
